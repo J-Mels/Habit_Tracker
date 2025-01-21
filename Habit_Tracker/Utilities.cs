@@ -83,7 +83,33 @@ namespace Habit_Tracker
             } while (userInput != "0");
             DisplayMainMenu();
         }
-        public static void DisplayUpdateMenu() { }
+        public static void DisplayUpdateMenu()
+        {
+            string? userInput;
+            do
+            {
+                Console.WriteLine("\n\n-------- UPDATE MENU -------");
+                Console.WriteLine("\nPlease select an option:");
+                Console.WriteLine("1) Update Habit");
+                Console.WriteLine("0) Back to Main Menu");
+
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        // TODO: Create update functionality
+                        break;
+                    case "0":
+                        break;
+                    default:
+                        Console.WriteLine("Invalid selection. Please try again or enter 0 to return to update menu.");
+                        break;
+                }
+
+            } while (userInput != "0");
+            DisplayMainMenu();
+        }
         public static void DisplayViewMenu() { }
         public static void DisplayDeletionMenu() { }
     }
