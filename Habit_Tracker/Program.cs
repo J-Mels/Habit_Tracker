@@ -9,12 +9,13 @@ namespace Habit_Tracker
         static void Main(string[] args)
         {
 
-            bool programIsRunning = true;
-
             Console.WriteLine("Welcome to your personal Habit Logger");
-            MainMenu.DisplayMainMenu();
 
+            Utilities.DisplayMainMenu();
 
+            // End Program
+            Console.WriteLine("Application shutting down...");
+            Console.WriteLine();
         }
 
     }
