@@ -10,7 +10,7 @@ namespace Habit_Tracker
     {
         public static void DisplayMainMenu()
         {
-            Database.CreateDB();
+            //Database.CreateDB();
 
             Console.Clear();
             Console.WriteLine("\n\n-------- MAIN MENU --------");
@@ -58,29 +58,27 @@ namespace Habit_Tracker
 
                 userInput = Console.ReadLine();
 
-                do
+                switch (userInput)
                 {
-                    switch (userInput)
-                    {
-                        case "1":
-                            Console.WriteLine("Input habit name (spaces not accepted):");
-                            string? habitName = Console.ReadLine();
-                            Console.WriteLine("Input habit date:");
-                            string? habitDate = Console.ReadLine();
-                            Console.WriteLine("Input habit quantity:");
-                            string? habitQuantity = Console.ReadLine();
+                    case "1":
+                        Console.WriteLine("Input habit name (spaces not accepted):");
+                        string? habitName = Console.ReadLine();
+                        Console.WriteLine("Input habit date:");
+                        string? habitDate = Console.ReadLine();
+                        Console.WriteLine("Input habit quantity:");
+                        string? habitQuantity = Console.ReadLine();
 
-                            Database.CreateTable(habitName, habitDate, habitQuantity);
+                        Database.CreateTable(habitName, habitDate, habitQuantity);
 
-                            Console.WriteLine($"Habit Created: {habitName}");
+                        Console.WriteLine($"\nHabit Created: {habitName}");
 
-                            break;
-                        default:
-                            Console.WriteLine("Invalid selection. Please try again or enter 0 to return to creation menu.");
-                            break;
-                    }
-                } while (userInput != "0");
-                DisplayCreationMenu();
+                        break;
+                    case "0":
+                        break;
+                    default:
+                        Console.WriteLine("Invalid selection. Please try again or enter 0 to return to creation menu.");
+                        break;
+                }
 
             } while (userInput != "0");
             DisplayMainMenu();

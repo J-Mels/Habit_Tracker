@@ -22,10 +22,10 @@ namespace Habit_Tracker
                 var tableCmd = connection.CreateCommand();
 
                 tableCmd.CommandText = @$"
-                            CREATE TABLE IF NOT EXISTS {Name} (
+                            CREATE TABLE IF NOT EXISTS [{Name}] (
                                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                {Date} TEXT,
-                                {Quantity} INTEGER
+                                [{Date}] TEXT,
+                                [{Quantity}] INTEGER
                                 )";
 
                 tableCmd.ExecuteNonQuery();
