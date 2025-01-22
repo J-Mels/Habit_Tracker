@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Habit_Tracker
@@ -13,6 +14,35 @@ namespace Habit_Tracker
         //public static void CreateDB()
         //{
         //}
+        private string _validatedString;
+        public string ValidatedString
+        {
+            get { return _validatedString; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Input cannot be empty or contain whitespace.");
+                }
+
+                if (value.Length >= 25)
+                {
+                    throw new ArgumentException("Input must be less than 25 characters long.");
+                }
+
+                if (value.Contains(" "))
+                {
+                    throw new ArgumentException("Input cannot contain spaces.");
+                }
+
+                if (!Regex.IsMatch(value, @"^[a-zA-Z]+$"))
+                {
+                    throw new ArgumentException("Input must contain only alphabetic characters (a-z, A-Z).");
+                }
+
+                _validatedString = value; ;
+            }
+        }
 
         public static void CreateTable(string Name, string Date, string Quantity)
         {

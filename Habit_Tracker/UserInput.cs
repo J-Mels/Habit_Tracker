@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Habit_Tracker
+{
+    internal class UserInput
+    {
+        public static string GetUserInput(string message)
+        {
+            Console.Clear();
+            Console.WriteLine(message);
+            string? input = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(input))
+            {
+                Console.Clear();
+                Console.WriteLine($"Invalid entry. {message}");
+                input = Console.ReadLine();
+            }
+            return input;
+        }
+
+        public static string GetNameInput(string message)
+        {
+            string habitName = GetUserInput(message);
+            while (habitName.Length > 25 || !Regex.IsMatch(habitName, @$"^[a-zA-Z]+$") || habitName.Contains(" "))
+            {
+                habitName = GetUserInput($"Invalid entry. {message}");
+            }
+            return habitName;
+        }
+
+        public static string GetDateInput(string message) { }
+        public static string GetQuantityInput(string message) { }
+    }
+}
+
+
+
+
+
+
+
+
+// DateTime.TryParseExact(dateInput, "dd-MM-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
+// Console.WriteLine("\n\nInvalid date. (Format: dd-mm-yyyy). Type 0 to return to main menu or try again:\n\n")
