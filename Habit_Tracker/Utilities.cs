@@ -55,7 +55,7 @@ namespace Habit_Tracker
                 userInput = Console.ReadLine();
 
                 string habitName = UserInput.GetNameInput("Input habit name (no spaces or special characters. Must be no more than 25 characters):");
-                string habitDate = UserInput.GetDateInput("Input habit date:");
+                string habitDate = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format):");
                 string habitQuantity = UserInput.GetQuantityInput("Input habit quantity:");
 
                 Database.CreateTable(habitName, habitDate, habitQuantity);

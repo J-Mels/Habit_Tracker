@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,7 +18,7 @@ namespace Habit_Tracker
             while (string.IsNullOrWhiteSpace(input))
             {
                 Console.Clear();
-                Console.WriteLine($"Invalid entry. {message}");
+                Console.WriteLine($"Invalid entry. {message}\n");
                 input = Console.ReadLine();
             }
             return input;
@@ -25,15 +26,27 @@ namespace Habit_Tracker
 
         public static string GetNameInput(string message)
         {
-            string habitName = GetUserInput(message);
-            while (habitName.Length > 25 || !Regex.IsMatch(habitName, @$"^[a-zA-Z]+$") || habitName.Contains(" "))
+            Console.Clear();
+            string habitNameInput = GetUserInput(message);
+            while (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z]+$") || habitNameInput.Contains(" "))
             {
-                habitName = GetUserInput($"Invalid entry. {message}");
+                habitNameInput = GetUserInput($"Invalid entry. {message}\n");
             }
-            return habitName;
+            return habitNameInput;
         }
 
-        public static string GetDateInput(string message) { }
+        public static string GetDateInput(string message) 
+        {
+            Console.Clear();
+            string habitDateInput = GetUserInput(message);
+            while (!DateTime.TryParseExact(habitDateInput, "MM-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
+            {
+                Console.Clear();
+                habitDateInput = GetUserInput($"Invalid entry. {message}");
+            }
+            return habitDateInput;
+            
+        }
         public static string GetQuantityInput(string message) { }
     }
 }
