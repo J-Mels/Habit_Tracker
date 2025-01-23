@@ -35,7 +35,7 @@ namespace Habit_Tracker
             return habitNameInput;
         }
 
-        public static string GetDateInput(string message) 
+        public static string GetDateInput(string message)
         {
             Console.Clear();
             string habitDateInput = GetUserInput(message);
@@ -45,9 +45,24 @@ namespace Habit_Tracker
                 habitDateInput = GetUserInput($"Invalid entry. {message}");
             }
             return habitDateInput;
-            
+
         }
-        public static string GetQuantityInput(string message) { }
+        public static string GetQuantityInput(string message)
+        {
+            Console.Clear();
+            string habitQuantityInput = GetUserInput(message);
+            while (true)
+            {
+                if (int.TryParse(habitQuantityInput, out _))
+                {
+                    return habitQuantityInput;
+                }
+                else
+                {
+                    habitQuantityInput = GetUserInput($"Invalid entry. {message}");
+                }
+            }
+        }
     }
 }
 
