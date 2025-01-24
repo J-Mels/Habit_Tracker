@@ -13,6 +13,7 @@ namespace Habit_Tracker
             //Database.CreateDB();
             string? userInput;
             bool programIsRunning = true;
+            bool invalidSelection = false;
 
             while (programIsRunning)
             {
@@ -24,6 +25,11 @@ namespace Habit_Tracker
                 Console.WriteLine("3) View habits");
                 Console.WriteLine("4) Delete habits");
                 Console.WriteLine("0) Exit");
+
+                if (invalidSelection)
+                {
+                    Console.WriteLine("Invalid selection. Please try again.");
+                }
 
                 userInput = Console.ReadLine();
 
@@ -45,7 +51,7 @@ namespace Habit_Tracker
                         programIsRunning = false;
                         break;
                     default:
-                        Console.WriteLine("Invalid selection. Please try again.");
+                        invalidSelection = true;
                         break;
                 }
             }
@@ -53,21 +59,25 @@ namespace Habit_Tracker
 
         public static void CreateHabit()
         {
+            bool returnToMainMenu = false;
+            string habitName = "";
 
-            string habitName = UserInput.GetNameInput(@"Input habit name (no spaces or special characters. 
-                                                            Must be no more than 25 characters).
-                                                            Or, enter 0 to return to main menu:");
+            while (!returnToMainMenu)
+            {
 
-            string habitDate = UserInput.GetDateInput(@"Input habit date (Use mm-dd-yyyy format).
-                                                            Or, enter 0 to return to main menu:");
+                habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters). Or, enter 0 to return to main menu:");
+                if (habitName == "0") returnToMainMenu = true;
+                string habitDate = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format). Or, enter 0 to return to main menu:");
+                if (habitDate == "0") returnToMainMenu = true;
+                string habitQuantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted). Or, enter 0 to return to main menu:");
+                if (habitQuantity == "0") returnToMainMenu = true;
+                Database.CreateTable(habitName, habitDate, habitQuantity);
 
-            string habitQuantity = UserInput.GetQuantityInput(@"Input habit quantity (Only whole numbers accepted).
-                                                                    Or, enter 0 to return to main menu:");
 
-            Database.CreateTable(habitName, habitDate, habitQuantity);
+            }
 
-            Console.WriteLine($"\nHabit Created: {habitName}");
-
+            Console.WriteLine($"\nHabit Created: {habitName}. Press any key to continue.");
+            Console.ReadKey();
             DisplayMainMenu();
         }
         //public static void DisplayUpdateMenu()

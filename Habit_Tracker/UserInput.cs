@@ -21,47 +21,45 @@ namespace Habit_Tracker
                 Console.WriteLine($"Invalid entry. {message}\n");
                 input = Console.ReadLine();
             }
+            if (input == "0") { Utilities.DisplayMainMenu(); }
             return input;
         }
 
         public static string GetNameInput(string message)
         {
-            Console.Clear();
+
             string habitNameInput = GetUserInput(message);
+            if (habitNameInput == "0") return habitNameInput;
             while (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z]+$") || habitNameInput.Contains(" "))
             {
                 habitNameInput = GetUserInput($"Invalid entry. {message}\n");
+                if (habitNameInput == "0") return habitNameInput;
             }
             return habitNameInput;
         }
 
         public static string GetDateInput(string message)
         {
-            Console.Clear();
+
             string habitDateInput = GetUserInput(message);
+            if (habitDateInput == "0") return habitDateInput;
             while (!DateTime.TryParseExact(habitDateInput, "MM-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
             {
-                Console.Clear();
-                habitDateInput = GetUserInput($"Invalid entry. {message}");
+                habitDateInput = GetUserInput($"Invalid entry. {message}\n");
+                if (habitDateInput == "0") return habitDateInput;
             }
             return habitDateInput;
 
         }
         public static string GetQuantityInput(string message)
         {
-            Console.Clear();
             string habitQuantityInput = GetUserInput(message);
-            while (true)
+            if (habitQuantityInput == "0") return habitQuantityInput;
+            while (!int.TryParse(habitQuantityInput, out _) && habitQuantityInput != "0")
             {
-                if (int.TryParse(habitQuantityInput, out _))
-                {
-                    return habitQuantityInput;
-                }
-                else
-                {
-                    habitQuantityInput = GetUserInput($"Invalid entry. {message}");
-                }
+                habitQuantityInput = GetUserInput($"Invalid entry. {message}\n");
             }
+            return habitQuantityInput;
         }
     }
 }
