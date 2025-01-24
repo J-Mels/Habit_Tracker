@@ -21,19 +21,17 @@ namespace Habit_Tracker
                 Console.WriteLine($"Invalid entry. {message}\n");
                 input = Console.ReadLine();
             }
-            if (input == "0") { Utilities.DisplayMainMenu(); }
             return input;
         }
 
         public static string GetNameInput(string message)
         {
-
             string habitNameInput = GetUserInput(message);
-            if (habitNameInput == "0") return habitNameInput;
+            while (habitNameInput != "0" && habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z]+$") || habitNameInput.Contains(" "))
+
             while (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z]+$") || habitNameInput.Contains(" "))
             {
                 habitNameInput = GetUserInput($"Invalid entry. {message}\n");
-                if (habitNameInput == "0") return habitNameInput;
             }
             return habitNameInput;
         }
@@ -42,20 +40,18 @@ namespace Habit_Tracker
         {
 
             string habitDateInput = GetUserInput(message);
-            if (habitDateInput == "0") return habitDateInput;
-            while (!DateTime.TryParseExact(habitDateInput, "MM-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
+            while (habitDateInput != "0" && !DateTime.TryParseExact(habitDateInput, "MM-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
             {
                 habitDateInput = GetUserInput($"Invalid entry. {message}\n");
-                if (habitDateInput == "0") return habitDateInput;
             }
             return habitDateInput;
 
         }
+
         public static string GetQuantityInput(string message)
         {
             string habitQuantityInput = GetUserInput(message);
-            if (habitQuantityInput == "0") return habitQuantityInput;
-            while (!int.TryParse(habitQuantityInput, out _) && habitQuantityInput != "0")
+            while (habitQuantityInput != "0" && !int.TryParse(habitQuantityInput, out _))
             {
                 habitQuantityInput = GetUserInput($"Invalid entry. {message}\n");
             }
@@ -63,13 +59,3 @@ namespace Habit_Tracker
         }
     }
 }
-
-
-
-
-
-
-
-
-// DateTime.TryParseExact(dateInput, "dd-MM-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
-// Console.WriteLine("\n\nInvalid date. (Format: dd-mm-yyyy). Type 0 to return to main menu or try again:\n\n")
