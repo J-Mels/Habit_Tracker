@@ -15,8 +15,7 @@ namespace Habit_Tracker
 
             while (programIsRunning)
             {
-                Console.Clear();
-                Console.WriteLine("\n\n-------- MAIN MENU --------");
+                Console.WriteLine("-------- MAIN MENU --------");
                 Console.WriteLine("\nPlease select an option:");
                 Console.WriteLine("1) Create new habit");
                 Console.WriteLine("2) Update habits");
@@ -30,21 +29,26 @@ namespace Habit_Tracker
                 {
                     case "1":
                         CreateHabit();
+                        Console.Clear();
                         break;
                     case "2":
                         //DisplayUpdateMenu();
+                        Console.Clear();
                         break;
                     case "3":
                         //DisplayViewMenu();
+                        Console.Clear();
                         break;
                     case "4":
                         //DisplayDeletionMenu();
+                        Console.Clear();
                         break;
                     case "0":
                         programIsRunning = false;
                         break;
                     default:
-                        Console.WriteLine("Invalid selection. Please try again.");
+                        Console.Clear();
+                        Console.WriteLine("Invalid selection. Please try again.\n");
                         break;
                 }
             }
