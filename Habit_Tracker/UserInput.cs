@@ -18,7 +18,15 @@ namespace Habit_Tracker
             while (string.IsNullOrWhiteSpace(input))
             {
                 Console.Clear();
+
+                if (message.Contains("Invalid"))
+                {
+                    Console.WriteLine(message);
+                }
+                else
+                {
                 Console.WriteLine($"Invalid entry.\n\n{message}");
+                }
                 input = Console.ReadLine();
             }
             return input;
