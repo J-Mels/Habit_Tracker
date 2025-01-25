@@ -18,7 +18,7 @@ namespace Habit_Tracker
             while (string.IsNullOrWhiteSpace(input))
             {
                 Console.Clear();
-                Console.WriteLine($"Invalid entry. {message}\n");
+                Console.WriteLine($"Invalid entry.\n\n{message}");
                 input = Console.ReadLine();
             }
             return input;
@@ -27,11 +27,9 @@ namespace Habit_Tracker
         public static string GetNameInput(string message)
         {
             string habitNameInput = GetUserInput(message);
-            while (habitNameInput != "0" && habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z]+$") || habitNameInput.Contains(" "))
-
-            while (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z]+$") || habitNameInput.Contains(" "))
+            while (habitNameInput != "0" && (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z0-9]+$") || habitNameInput.Contains(" ")))
             {
-                habitNameInput = GetUserInput($"Invalid entry. {message}\n");
+                habitNameInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
             return habitNameInput;
         }
@@ -42,7 +40,7 @@ namespace Habit_Tracker
             string habitDateInput = GetUserInput(message);
             while (habitDateInput != "0" && !DateTime.TryParseExact(habitDateInput, "MM-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
             {
-                habitDateInput = GetUserInput($"Invalid entry. {message}\n");
+                habitDateInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
             return habitDateInput;
 
@@ -53,7 +51,7 @@ namespace Habit_Tracker
             string habitQuantityInput = GetUserInput(message);
             while (habitQuantityInput != "0" && !int.TryParse(habitQuantityInput, out _))
             {
-                habitQuantityInput = GetUserInput($"Invalid entry. {message}\n");
+                habitQuantityInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
             return habitQuantityInput;
         }

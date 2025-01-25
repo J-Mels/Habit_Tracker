@@ -52,12 +52,12 @@ namespace Habit_Tracker
 
         public static void CreateHabit()
         {
-            string habitName;
+
 
             while (true)
             {
 
-                habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
+                string habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
                 if (habitName == "0") break;
 
                 string habitDate = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
@@ -67,11 +67,20 @@ namespace Habit_Tracker
                 if (habitQuantity == "0") break;
 
                 Database.CreateTable(habitName, habitDate, habitQuantity);
+                Console.WriteLine($"\n Habit Created: {habitName}.");
 
-                string addNextHabit = UserInput.GetUserInput($"\nHabit Created: {habitName}.\n\nWould you like to create another habit? (Y/N).");
+                string inputError = "";
+                
+                while (true)
+                {
+                    string addNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to create another habit? (Y/N).");
 
-                if (addNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
-                    break;
+                    if (addNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
+                        return;
+                    else if (addNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
+                        break;
+                    else inputError = "Invalid selection. Only Y/y or N/n accepted.";
+                }
             }
 
         }
