@@ -10,9 +10,10 @@ namespace Habit_Tracker
 {
     internal class UserInput
     {
-        public static string GetUserInput(string message)
+        public static string GetUserInput(string message, bool clearConsole = true)
         {
-            Console.Clear();
+            if (clearConsole)
+                Console.Clear();
             Console.WriteLine(message);
             string? input = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(input))
@@ -25,7 +26,7 @@ namespace Habit_Tracker
                 }
                 else
                 {
-                Console.WriteLine($"Invalid entry.\n\n{message}");
+                    Console.WriteLine($"Invalid entry.\n\n{message}");
                 }
                 input = Console.ReadLine();
             }

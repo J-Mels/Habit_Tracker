@@ -67,19 +67,26 @@ namespace Habit_Tracker
                 if (habitQuantity == "0") break;
 
                 Database.CreateTable(habitName, habitDate, habitQuantity);
-                Console.WriteLine($"\n Habit Created: {habitName}.");
+
+                Console.Clear();
+
+                Console.WriteLine($"\nHabit Created: {habitName}.");
 
                 string inputError = "";
-                
+
                 while (true)
                 {
-                    string addNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to create another habit? (Y/N).");
+                    string addNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to create another habit? (Y/N).", false);
 
                     if (addNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
                         return;
                     else if (addNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
                         break;
-                    else inputError = "Invalid selection. Only Y/y or N/n accepted.";
+                    else
+                    {
+                        inputError = "Invalid selection. Only Y/y or N/n accepted.";
+                        Console.Clear();
+                    }
                 }
             }
 
