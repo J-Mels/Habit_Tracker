@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Xml.Linq;
 
 namespace Habit_Tracker
 {
@@ -45,6 +47,28 @@ namespace Habit_Tracker
 
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
+            }
+        }
+
+        public static void ViewTableNames()
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';";
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        Console.WriteLine("Tables in the database:");
+                        while (reader.Read())
+                        {
+                            // TODO (optional) -- Format output below in the console -- for instance, into columns with 5-10 rows, etc.
+                            Console.WriteLine(reader.GetString(0));
+                        }
+                    }
+                }
             }
         }
 

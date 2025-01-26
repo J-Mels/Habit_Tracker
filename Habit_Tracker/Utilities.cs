@@ -37,7 +37,8 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "3":
-                        Console.Clear();
+                        Database.ViewTableNames();
+                        //Console.Clear();
                         break;
                     case "4":
                         Console.Clear();
