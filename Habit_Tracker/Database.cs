@@ -14,37 +14,8 @@ namespace Habit_Tracker
         //public static void CreateDB()
         //{
         //}
-        //private string _validatedString;
-        //public string ValidatedString
-        //{
-        //    get { return _validatedString; }
-        //    set
-        //    {
-        //        if (string.IsNullOrWhiteSpace(value))
-        //        {
-        //            throw new ArgumentException("Input cannot be empty or contain whitespace.");
-        //        }
 
-        //        if (value.Length >= 25)
-        //        {
-        //            throw new ArgumentException("Input must be less than 25 characters long.");
-        //        }
-
-        //        if (value.Contains(" "))
-        //        {
-        //            throw new ArgumentException("Input cannot contain spaces.");
-        //        }
-
-        //        if (!Regex.IsMatch(value, @"^[a-zA-Z]+$"))
-        //        {
-        //            throw new ArgumentException("Input must contain only alphabetic characters (a-z, A-Z).");
-        //        }
-
-        //        _validatedString = value; ;
-        //    }
-        //}
-
-        public static void CreateTable(string Name, string Date, string Quantity)
+        public static void CreateTable(string name, string date, string quantity)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -52,16 +23,31 @@ namespace Habit_Tracker
                 var tableCmd = connection.CreateCommand();
 
                 tableCmd.CommandText = @$"
-                            CREATE TABLE IF NOT EXISTS [{Name}] (
+                            CREATE TABLE IF NOT EXISTS '{name}' (
                                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                [{Date}] TEXT,
-                                [{Quantity}] INTEGER
+                                '{date}' TEXT,
+                                '{quantity}' INTEGER
                                 )";
 
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
             }
         }
+
+        public static void Insert(string name, string date, string quantity)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                var tableCmd = connection.CreateCommand();
+
+                tableCmd.CommandText = $"INSERT INTO {name}(Date, Quantity) VALUES('{date}', '{quantity}')";
+
+                tableCmd.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
     }
 }
 
