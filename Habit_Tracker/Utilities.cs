@@ -33,6 +33,7 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "2":
+                        InsertHabit();
                         Console.Clear();
                         break;
                     case "3":
@@ -64,13 +65,9 @@ namespace Habit_Tracker
                 string habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
                 if (habitName == "0") break;
 
-                string habitDate = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
-                if (habitDate == "0") break;
+                // TODO -- Check if habitName table already exists in the database.
 
-                string habitQuantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
-                if (habitQuantity == "0") break;
-
-                Database.CreateTable(habitName, habitDate, habitQuantity);
+                Database.CreateTable(habitName);
 
                 Console.Clear();
 
@@ -100,8 +97,12 @@ namespace Habit_Tracker
         {
             while (true)
             {
+                // TODO -- list all habit tables in the database to assist user in making seleciton
+
                 string habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
                 if (habitName == "0") break;
+
+                // TODO -- Check if habitName exists in the database.
 
                 string date = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
                 if (habitName == "0") break;
@@ -119,7 +120,7 @@ namespace Habit_Tracker
                 {
                     while (true)
                     {
-                        string insertNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to create another habit? (Y/N).", false);
+                        string insertNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to insert another habit entry? (Y/N).", false);
 
                         if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
                             return;

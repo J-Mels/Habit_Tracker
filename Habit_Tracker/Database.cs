@@ -15,7 +15,7 @@ namespace Habit_Tracker
         //{
         //}
 
-        public static void CreateTable(string name, string date, string quantity)
+        public static void CreateTable(string name)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -25,8 +25,8 @@ namespace Habit_Tracker
                 tableCmd.CommandText = @$"
                             CREATE TABLE IF NOT EXISTS '{name}' (
                                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                '{date}' TEXT,
-                                '{quantity}' INTEGER
+                                Date TEXT,
+                                Quantity INTEGER
                                 )";
 
                 tableCmd.ExecuteNonQuery();
