@@ -50,8 +50,12 @@ namespace Habit_Tracker
             }
         }
 
-        public static void ViewTableNames()
+        public static string[] GetTableNames()
         {
+
+            string names = "";
+            string[] namesList;
+
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -65,13 +69,21 @@ namespace Habit_Tracker
                         while (reader.Read())
                         {
                             // TODO (optional) -- Format output below in the console -- for instance, into columns with 5-10 rows, etc.
-                            Console.WriteLine(reader.GetString(0));
+                            names += $"{reader.GetString(0)},";
                         }
+                        namesList = names.Split(',');
+                        Array.Sort(namesList);
+                        return (namesList);
                     }
                 }
             }
         }
 
+
+        public static void CheckForDuplicates(string habit)
+        {
+
+        }
     }
 }
 

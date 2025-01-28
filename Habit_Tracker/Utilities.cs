@@ -37,7 +37,7 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "3":
-                        Database.ViewTableNames();
+                        Console.WriteLine(String.Join(',', Database.GetTableNames()));
                         //Console.Clear();
                         break;
                     case "4":
@@ -119,21 +119,19 @@ namespace Habit_Tracker
 
                 while (true)
                 {
-                    while (true)
-                    {
-                        string insertNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to insert another habit entry? (Y/N).", false);
+                    string insertNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to insert another habit entry? (Y/N).", false);
 
-                        if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
-                            return;
-                        else if (insertNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
-                            break;
-                        else
-                        {
-                            inputError = "Invalid selection. Only Y/y or N/n accepted.";
-                            Console.Clear();
-                        }
+                    if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
+                        return;
+                    else if (insertNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
+                        break;
+                    else
+                    {
+                        inputError = "Invalid selection. Only Y/y or N/n accepted.";
+                        Console.Clear();
                     }
                 }
+
             }
 
 
