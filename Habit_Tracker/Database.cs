@@ -80,9 +80,19 @@ namespace Habit_Tracker
         }
 
 
-        public static void CheckForDuplicates(string habit)
+        public static bool CheckForDuplicates(string habit)
         {
+            string[] habitNames = GetTableNames();
 
+            foreach (string habitName in habitNames)
+            {
+                if (habit == habitName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

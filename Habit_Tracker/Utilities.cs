@@ -65,6 +65,10 @@ namespace Habit_Tracker
 
                 string habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
                 if (habitName == "0") break;
+                if (Database.CheckForDuplicates(habitName))
+                {
+                    Console.WriteLine($"${habitName} already exists. Please choose a different name");
+                }
 
                 // TODO -- Check if habitName table already exists in the database.
 
