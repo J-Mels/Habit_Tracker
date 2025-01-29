@@ -36,10 +36,12 @@ namespace Habit_Tracker
         public static string GetNameInput(string message)
         {
             string habitNameInput = GetUserInput(message);
+
             while (habitNameInput != "0" && (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z0-9]+$") || habitNameInput.Contains(" ")))
             {
                 habitNameInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
+
             return habitNameInput;
         }
 

@@ -59,30 +59,34 @@ namespace Habit_Tracker
 
         private static void CreateHabit()
         {
+            string habitName = "";
+            string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
+            string duplicateFoundMessage = "";
 
             while (true)
             {
+                habitName = UserInput.GetNameInput($"{duplicateFoundMessage}{inputNameMessage}");
 
-                string habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
                 if (habitName == "0") break;
+
                 if (Database.CheckForDuplicates(habitName))
                 {
-                    Console.WriteLine($"${habitName} already exists. Please choose a different name");
+                    duplicateFoundMessage = "Habit already exists. Please use a unique name.\n\n";
+                    continue;
                 }
-
-                // TODO -- Check if habitName table already exists in the database.
 
                 Database.CreateTable(habitName);
 
                 Console.Clear();
 
-                Console.WriteLine($"\nHabit Created: {habitName}.");
+                Console.WriteLine($"Habit Created: {habitName}\n\n.");
 
                 string inputError = "";
 
+                // TODO -- Write a reusable method for loop below
                 while (true)
                 {
-                    string addNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to create another habit? (Y/N).", false);
+                    string addNextHabit = UserInput.GetUserInput($"{inputError}Would you like to create another habit? (Y/N).", false);
 
                     if (addNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
                         return;
@@ -90,7 +94,7 @@ namespace Habit_Tracker
                         break;
                     else
                     {
-                        inputError = "Invalid selection. Only Y/y or N/n accepted.";
+                        inputError = "Invalid selection. Only Y/y or N/n accepted.\n\n";
                         Console.Clear();
                     }
                 }
@@ -100,20 +104,28 @@ namespace Habit_Tracker
 
         private static void InsertHabit()
         {
+            string habitName = "";
+            string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
+            string noHabitFoundMessage = "";
+
             while (true)
             {
                 // TODO -- list all habit tables in the database to assist user in making seleciton
 
-                string habitName = UserInput.GetNameInput("Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:");
+                habitName = UserInput.GetNameInput($"{noHabitFoundMessage}{inputNameMessage}");
                 if (habitName == "0") break;
 
-                // TODO -- Check if habitName exists in the database.
+                if (!Database.CheckForDuplicates(habitName))
+                {
+                    noHabitFoundMessage = "Habit not found. Please enter an existing habit name.\n\n";
+                    continue;
+                }
 
                 string date = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
-                if (habitName == "0") break;
+                if (date == "0") break;
 
                 string quantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
-                if (habitName == "0") break;
+                if (quantity == "0") break;
 
                 Database.Insert(habitName, date, quantity);
 
@@ -121,9 +133,10 @@ namespace Habit_Tracker
 
                 string inputError = "";
 
+                // TODO -- Write a reusable method for loop below
                 while (true)
                 {
-                    string insertNextHabit = UserInput.GetUserInput($"{inputError}\n\nWould you like to insert another habit entry? (Y/N).", false);
+                    string insertNextHabit = UserInput.GetUserInput($"{inputError}Would you like to insert another habit entry? (Y/N).", false);
 
                     if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
                         return;
@@ -131,7 +144,7 @@ namespace Habit_Tracker
                         break;
                     else
                     {
-                        inputError = "Invalid selection. Only Y/y or N/n accepted.";
+                        inputError = "Invalid selection. Only Y/y or N/n accepted.\n\n";
                         Console.Clear();
                     }
                 }

@@ -79,7 +79,6 @@ namespace Habit_Tracker
             }
         }
 
-
         public static bool CheckForDuplicates(string habit)
         {
             string[] habitNames = GetTableNames();
