@@ -20,7 +20,7 @@ namespace Habit_Tracker
                 Console.WriteLine("1) Create new habit");
                 Console.WriteLine("2) Insert habit entry");
                 Console.WriteLine("3) Update habit entry");
-                Console.WriteLine("4) View habit");
+                Console.WriteLine("4) View habits");
                 Console.WriteLine("5) Delete habit");
                 Console.WriteLine("0) Exit");
 
@@ -37,8 +37,10 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "3":
-                        Console.WriteLine(String.Join(',', Database.GetTableNames()));
-                        //Console.Clear();
+                        Database.GetHabitRecords("a");
+                        Console.WriteLine("\nPress any key to continue ...");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "4":
                         Console.Clear();
@@ -79,7 +81,7 @@ namespace Habit_Tracker
 
                 Console.Clear();
 
-                Console.WriteLine($"Habit Created: {habitName}\n\n.");
+                Console.WriteLine($"Habit Created: {habitName}\n");
 
                 string inputError = "";
 
@@ -99,7 +101,6 @@ namespace Habit_Tracker
                     }
                 }
             }
-
         }
 
         private static void InsertHabit()
@@ -133,6 +134,9 @@ namespace Habit_Tracker
 
                 string inputError = "";
 
+                Console.WriteLine($"Habit entry inserted into {habitName}\n");
+
+
                 // TODO -- Write a reusable method for loop below
                 while (true)
                 {
@@ -151,6 +155,11 @@ namespace Habit_Tracker
 
             }
 
+
+        }
+
+        private static void ViewHabits()
+        {
 
         }
     }

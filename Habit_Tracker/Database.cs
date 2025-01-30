@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Xml.Linq;
+using System.Globalization;
 
 namespace Habit_Tracker
 {
@@ -65,7 +65,6 @@ namespace Habit_Tracker
                 {
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        Console.WriteLine("Tables in the database:");
                         while (reader.Read())
                         {
                             // TODO (optional) -- Format output below in the console -- for instance, into columns with 5-10 rows, etc.
@@ -78,6 +77,47 @@ namespace Habit_Tracker
                 }
             }
         }
+
+        public static void GetHabitRecords(string habit)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = $"SELECT * FROM {habit}";
+
+                List<HabitRecord> tableData = new();
+
+                SQLiteDataReader reader = tableCmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        tableData.Add(
+                        new HabitRecord
+                        {
+                            Id = reader.GetInt32(0),
+                            Date = DateTime.ParseExact(reader.GetString(1), "MM-dd-yyyy", new CultureInfo("en-US")),
+                            Quantity = reader.GetInt32(2),
+                        });
+                    }
+
+                    connection.Close();
+
+                    foreach (var item in tableData)
+                    {
+                        Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No entries found");
+                }
+            }
+        }
+
 
         public static bool CheckForDuplicates(string habit)
         {
