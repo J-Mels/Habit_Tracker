@@ -63,17 +63,24 @@ namespace Habit_Tracker
         {
             string habitName = "";
             string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
-            string duplicateFoundMessage = "";
+            string tableNames = string.Join(", ", Database.GetTableNames());
+            string existingHabits = $"\n\nHabits already in the Database:\n\n{tableNames}";
+            
 
             while (true)
             {
-                habitName = UserInput.GetNameInput($"{duplicateFoundMessage}{inputNameMessage}");
+                Console.Clear();
+                
+                habitName = UserInput.GetNameInput($"{inputNameMessage}{existingHabits}");
 
                 if (habitName == "0") break;
 
                 if (Database.CheckForDuplicates(habitName))
                 {
-                    duplicateFoundMessage = "Habit already exists. Please use a unique name.\n\n";
+                    Console.Clear();
+                    Console.WriteLine("Habit already exists. Please use a unique name.\n");
+                    Console.WriteLine("(Press any key to continue ...)");
+                    Console.ReadKey();
                     continue;
                 }
 
@@ -88,7 +95,7 @@ namespace Habit_Tracker
                 // TODO -- Write a reusable method for loop below
                 while (true)
                 {
-                    string addNextHabit = UserInput.GetUserInput($"{inputError}Would you like to create another habit? (Y/N).", false);
+                    string addNextHabit = UserInput.GetUserInput($"{inputError}Would you like to create another habit? (Y/N).");
 
                     if (addNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
                         return;
@@ -107,18 +114,24 @@ namespace Habit_Tracker
         {
             string habitName = "";
             string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
-            string noHabitFoundMessage = "";
+            string tableNames = string.Join(", ", Database.GetTableNames());
+            string existingHabits = $"\n\nHabits already in the Database:\n\n{tableNames}";
 
             while (true)
             {
+                Console.Clear();
                 // TODO -- list all habit tables in the database to assist user in making seleciton
 
-                habitName = UserInput.GetNameInput($"{noHabitFoundMessage}{inputNameMessage}");
+                habitName = UserInput.GetNameInput($"{inputNameMessage}{existingHabits}");
+                Console.WriteLine();
                 if (habitName == "0") break;
 
                 if (!Database.CheckForDuplicates(habitName))
                 {
-                    noHabitFoundMessage = "Habit not found. Please enter an existing habit name.\n\n";
+                    Console.Clear();
+                    Console.WriteLine("Habit not found. Please enter an existing habit name.\n");
+                    Console.WriteLine("(Press any key to continue ...)");
+                    Console.ReadKey();
                     continue;
                 }
 
@@ -140,7 +153,7 @@ namespace Habit_Tracker
                 // TODO -- Write a reusable method for loop below
                 while (true)
                 {
-                    string insertNextHabit = UserInput.GetUserInput($"{inputError}Would you like to insert another habit entry? (Y/N).", false);
+                    string insertNextHabit = UserInput.GetUserInput($"{inputError}Would you like to insert another habit entry? (Y/N).");
 
                     if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
                         return;

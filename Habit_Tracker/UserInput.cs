@@ -10,10 +10,11 @@ namespace Habit_Tracker
 {
     internal class UserInput
     {
-        public static string GetUserInput(string message, bool clearConsole = true)
+        //public static string GetUserInput(string message, bool clearConsole = true)
+        public static string GetUserInput(string message)
         {
-            if (clearConsole)
-                Console.Clear();
+            //if (clearConsole)
+            //    Console.Clear();
             Console.WriteLine(message);
             string? input = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(input))
@@ -39,6 +40,7 @@ namespace Habit_Tracker
 
             while (habitNameInput != "0" && (habitNameInput.Length > 25 || !Regex.IsMatch(habitNameInput, @$"^[a-zA-Z0-9]+$") || habitNameInput.Contains(" ")))
             {
+                Console.Clear();
                 habitNameInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
 
@@ -51,6 +53,7 @@ namespace Habit_Tracker
             string habitDateInput = GetUserInput(message);
             while (habitDateInput != "0" && !DateTime.TryParseExact(habitDateInput, "MM-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
             {
+                Console.Clear();
                 habitDateInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
             return habitDateInput;
@@ -62,6 +65,7 @@ namespace Habit_Tracker
             string habitQuantityInput = GetUserInput(message);
             while (habitQuantityInput != "0" && !int.TryParse(habitQuantityInput, out _))
             {
+                Console.Clear();
                 habitQuantityInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
             return habitQuantityInput;

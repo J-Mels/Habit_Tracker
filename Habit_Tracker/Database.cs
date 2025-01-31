@@ -50,11 +50,12 @@ namespace Habit_Tracker
             }
         }
 
-        public static string[] GetTableNames()
+        public static List<string> GetTableNames()
         {
 
+            // TODO -- Use a List instead of an array
             string names = "";
-            string[] namesList;
+            List<string> namesList = new List<string>();
 
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -67,11 +68,9 @@ namespace Habit_Tracker
                     {
                         while (reader.Read())
                         {
-                            // TODO (optional) -- Format output below in the console -- for instance, into columns with 5-10 rows, etc.
-                            names += $"{reader.GetString(0)},";
+                            namesList.Add(reader.GetString(0));
                         }
-                        namesList = names.Split(',');
-                        Array.Sort(namesList);
+                        namesList.Sort();
                         return (namesList);
                     }
                 }
@@ -106,10 +105,16 @@ namespace Habit_Tracker
 
                     connection.Close();
 
+                    Console.WriteLine("---------------------------------------------------");
+
                     foreach (var item in tableData)
                     {
                         Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
                     }
+
+
+                    Console.WriteLine("---------------------------------------------------");
+
                 }
                 else
                 {
@@ -121,7 +126,7 @@ namespace Habit_Tracker
 
         public static bool CheckForDuplicates(string habit)
         {
-            string[] habitNames = GetTableNames();
+            List<string> habitNames = GetTableNames();
 
             foreach (string habitName in habitNames)
             {
