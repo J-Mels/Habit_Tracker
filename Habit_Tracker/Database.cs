@@ -77,67 +77,79 @@ namespace Habit_Tracker
             }
         }
 
-        public static void GetHabitRecords(string habit)
+        public static List<string> GetNumberedTableNames()
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            List<string> tableNames = GetTableNames();
+            List<string> tableNamesNumbered = new List<string>();
+
+            for (int i = 0; i < tableNames.Count; i++)
             {
-                connection.Open();
-
-                var tableCmd = connection.CreateCommand();
-                tableCmd.CommandText = $"SELECT * FROM {habit}";
-
-                List<HabitRecord> tableData = new();
-
-                SQLiteDataReader reader = tableCmd.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        tableData.Add(
-                        new HabitRecord
-                        {
-                            Id = reader.GetInt32(0),
-                            Date = DateTime.ParseExact(reader.GetString(1), "MM-dd-yyyy", new CultureInfo("en-US")),
-                            Quantity = reader.GetInt32(2),
-                        });
-                    }
-
-                    connection.Close();
-
-                    Console.WriteLine("---------------------------------------------------");
-
-                    foreach (var item in tableData)
-                    {
-                        Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
-                    }
-
-
-                    Console.WriteLine("---------------------------------------------------");
-
-                }
-                else
-                {
-                    Console.WriteLine("No entries found");
-                }
+                tableNamesNumbered[i] = $"{i + 1} {tableNames[i]}";
             }
+
+            return tableNamesNumbered;
         }
 
-
-        public static bool CheckForDuplicates(string habit)
-        {
-            List<string> habitNames = GetTableNames();
-
-            foreach (string habitName in habitNames)
+            public static void GetHabitRecords(string habit)
             {
-                if (habit == habitName)
+                using (var connection = new SQLiteConnection(connectionString))
                 {
-                    return true;
+                    connection.Open();
+
+                    var tableCmd = connection.CreateCommand();
+                    tableCmd.CommandText = $"SELECT * FROM {habit}";
+
+                    List<HabitRecord> tableData = new();
+
+                    SQLiteDataReader reader = tableCmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            tableData.Add(
+                            new HabitRecord
+                            {
+                                Id = reader.GetInt32(0),
+                                Date = DateTime.ParseExact(reader.GetString(1), "MM-dd-yyyy", new CultureInfo("en-US")),
+                                Quantity = reader.GetInt32(2),
+                            });
+                        }
+
+                        connection.Close();
+
+                        Console.WriteLine("---------------------------------------------------");
+
+                        foreach (var item in tableData)
+                        {
+                            Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
+                        }
+
+                        Console.WriteLine("---------------------------------------------------");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("No entries found");
+                    }
                 }
             }
 
-            return false;
+
+            public static bool CheckForDuplicates(string habit)
+            {
+                List<string> habitNames = GetTableNames();
+
+                foreach (string habitName in habitNames)
+                {
+                    if (habit == habitName)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
     }
-}
 
