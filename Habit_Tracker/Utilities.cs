@@ -92,8 +92,6 @@ namespace Habit_Tracker
 
                 Console.WriteLine($"Habit Created: {habitName}\n");
 
-                string inputError = "";
-
                 if (UserInput.AddAnother("Would you like to create another habit? (Y/N)"))
                 {
                     continue;
@@ -107,52 +105,31 @@ namespace Habit_Tracker
 
         private static void InsertHabit()
         {
-            string habitName = "";
+            string habitName;
             string selectHabitMessage = "Select a habit from the database.\nOr, enter 0 to return to main menu:";
             List<string> tableNames = Database.GetTableNames();
-            string tableNamesNumbered = "";
-            string habitSelection;
-            int habitIndex;
-
-            for (int i = 0; i < tableNames.Count; i++)
-            {
-                tableNamesNumbered += $"{i + 1}) {tableNames[i]}\n";
-            }
+            string date;
+            string quantity;
 
             while (true)
             {
 
-                Console.Clear();
-
-                habitSelection = UserInput.GetUserInput($"{selectHabitMessage}\n\n{tableNamesNumbered}"); /////////////////PROBLEM: CONSOLE MIGHT GET CLEARED
-
-                if (habitSelection == "0") break;
-
-                if (int.TryParse(habitSelection, out habitIndex) && habitIndex <= tableNames.Count)
-                {
-                    habitName = tableNames[habitIndex - 1];
-                }
-                else
-                {
-                    Console.WriteLine($"\nInvalid selection. Please select a whole number withinrange (1 - {tableNames.Count}) matching a habit in the above list.");
-                    Console.WriteLine("\nPress any key to continue and try again.");
-                    Console.ReadKey();
-                    continue;
-                }
+                habitName = UserInput.GetHabitNameByIndex(tableNames, selectHabitMessage);
+                if (habitName == "0")
+                    break;
 
                 Console.Clear();
-                string date = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
+
+                date = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
                 if (date == "0") break;
 
                 Console.Clear();
-                string quantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
+                quantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
                 if (quantity == "0") break;
 
                 Database.Insert(habitName, date, quantity);
 
                 Console.Clear();
-
-                string inputError = "";
 
                 Console.WriteLine($"Habit entry inserted into {habitName}\n");
 
@@ -164,11 +141,10 @@ namespace Habit_Tracker
                 }
                 else
                 {
-                    break; ;
+                    break;
                 }
 
             }
-
 
         }
 

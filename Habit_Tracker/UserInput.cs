@@ -87,5 +87,39 @@ namespace Habit_Tracker
                 }
             }
         }
+
+        public static string GetHabitNameByIndex(List<string> tableNames, string message)
+        {
+            string tableNamesNumbered = "";
+            string habitSelection;
+            int habitIndex;
+
+            for (int i = 0; i < tableNames.Count; i++)
+            {
+                tableNamesNumbered += $"{i + 1}) {tableNames[i]}\n";
+            }
+
+            while (true)
+            {
+
+                Console.Clear();
+
+                habitSelection = UserInput.GetUserInput($"{message}\n\n{tableNamesNumbered}");
+
+                if (habitSelection == "0") return habitSelection;
+
+                if (int.TryParse(habitSelection, out habitIndex) && habitIndex <= tableNames.Count)
+                {
+                    return tableNames[habitIndex - 1];
+                }
+                else
+                {
+                    Console.WriteLine($"\nInvalid selection. Please select a whole number within range (1 - {tableNames.Count}) matching a habit in the above list.");
+                    Console.WriteLine("\nPress any key to continue and try again.");
+                    Console.ReadKey();
+                    continue;
+                }
+            }
+        }
     }
 }
