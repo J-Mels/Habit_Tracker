@@ -76,19 +76,6 @@ namespace Habit_Tracker
             }
         }
 
-        public static List<string> GetNumberedTableNames()
-        {
-            List<string> tableNames = GetTableNames();
-            List<string> tableNamesNumbered = new List<string>();
-
-            for (int i = 0; i < tableNames.Count; i++)
-            {
-                tableNamesNumbered[i] = $"{i + 1} {tableNames[i]}";
-            }
-
-            return tableNamesNumbered;
-        }
-
         public static void GetHabitRecords(string habit)
         {
             using (var connection = new SQLiteConnection(connectionString))
@@ -134,6 +121,15 @@ namespace Habit_Tracker
             }
         }
 
+        public static void DeleteRecord()
+        {
+
+        }
+
+        public static void DeleteTable()
+        {
+
+        }
 
         public static bool CheckForDuplicates(string habit)
         {

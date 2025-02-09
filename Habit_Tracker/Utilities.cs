@@ -20,8 +20,8 @@ namespace Habit_Tracker
                 Console.WriteLine("1) Create new habit");
                 Console.WriteLine("2) Insert habit entry");
                 Console.WriteLine("3) Update habit entry");
-                Console.WriteLine("4) View habits");
-                Console.WriteLine("5) Delete habit");
+                Console.WriteLine("4) View habit entries");
+                Console.WriteLine("5) Delete habit entries");
                 Console.WriteLine("0) Exit");
 
                 userInput = Console.ReadLine();
@@ -43,6 +43,7 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "4":
+                        ViewHabits();
                         Console.Clear();
                         break;
                     case "5":
@@ -150,6 +151,49 @@ namespace Habit_Tracker
 
         private static void ViewHabits()
         {
+            string habitName;
+            string viewHabitMessage = "Select a habit from the database to view entries.\nOr, enter 0 to return to main menu:";
+            List<string> tableNames = Database.GetTableNames();
+
+            while (true)
+            {
+
+                habitName = UserInput.GetHabitNameByIndex(tableNames, viewHabitMessage);
+                if (habitName == "0")
+                    break;
+
+                Console.Clear();
+
+                Database.GetHabitRecords(habitName);
+
+                if (UserInput.AddAnother($"Would you like to view more habit records? (Y/N)"))
+                    continue;
+                else { break; }
+            }
+        }
+
+        private static void DeleteHabitRecords()
+        {
+            string habitName;
+            string deleteHabitMessage = "Select a habit from the database to delete entries.\nOr, enter 0 to return to main menu:";
+
+            while (true)
+            {
+
+                List<string> tableNames = Database.GetTableNames();
+
+                habitName = UserInput.GetHabitNameByIndex(tableNames, deleteHabitMessage);
+
+                if (habitName == "0")
+                    break;
+
+                Console.Clear();
+
+                Database.GetHabitRecords(habitName);
+                // TODO: Prompt for confirmation before proceeding
+                // TODO: Call deletion method from Database.cs
+                // TODO: Ask user if they want to delete another record
+            }
 
         }
     }
