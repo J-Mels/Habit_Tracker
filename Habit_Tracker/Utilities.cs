@@ -63,12 +63,14 @@ namespace Habit_Tracker
         {
             string habitName = "";
             string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
-            string tableNames = string.Join(", ", Database.GetTableNames());
+            string tableNames = string.Join("\n", Database.GetTableNames());
             string existingHabits = $"\n\nHabits already in the Database:\n\n{tableNames}";
 
 
             while (true)
             {
+
+
                 Console.Clear();
 
                 habitName = UserInput.GetNameInput($"{inputNameMessage}{existingHabits}");
@@ -110,59 +112,46 @@ namespace Habit_Tracker
             }
         }
 
-        //private static void InsertHabit()
-        //{
-        //    string habitName = "";
-        //    string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
-        //    string tableNames = string.Join(", ", Database.GetTableNames());
-        //    string existingHabits = $"\n\nHabits already in the Database:\n\n{tableNames}";
-
-        //    while (true)
-        //    {
-        //        Console.Clear();
-        //        // TODO -- list all habit tables in the database to assist user in making seleciton
-
-        //        habitName = UserInput.GetNameInput($"{inputNameMessage}{existingHabits}");
-        //        Console.WriteLine();
-        //        if (habitName == "0") break;
-
-        //        if (!Database.CheckForDuplicates(habitName))
-        //        {
-        //            Console.Clear();
-        //            Console.WriteLine("Habit not found. Please enter an existing habit name.\n");
-        //            Console.WriteLine("(Press any key to continue ...)");
-        //            Console.ReadKey();
-        //            continue;
-        //        }
         private static void InsertHabit()
         {
             string habitName = "";
             string selectHabitMessage = "Select a habit from the database.\nOr, enter 0 to return to main menu:";
             List<string> tableNames = Database.GetTableNames();
+            string tableNamesNumbered = "";
             string habitSelection;
             int habitIndex;
-            // TRY CREATING A NEW LIST WITH NUMBERS, THEN COMBINE TO SINGLE STRING, THEN PASS TO HABITSELECTION BELOW
+
+            for (int i = 0; i < tableNames.Count; i++)
+            {
+                tableNamesNumbered += $"{i + 1}) {tableNames[i]}\n";
+            }
+
             while (true)
             {
+
                 Console.Clear();
 
-                for (int i = 0; i < tableNames.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}: {tableNames[i]}");
-                }
-
-                habitSelection = UserInput.GetUserInput($"{selectHabitMessage}"); /////////////////PROBLEM: CONSOLE MIGHT GET CLEARED
+                habitSelection = UserInput.GetUserInput($"{selectHabitMessage}\n\n{tableNamesNumbered}"); /////////////////PROBLEM: CONSOLE MIGHT GET CLEARED
 
                 if (habitSelection == "0") break;
 
-                if (int.TryParse(habitSelection, out habitIndex) && habitIndex > 1 && habitIndex <= tableNames.Count)
+                if (int.TryParse(habitSelection, out habitIndex) && habitIndex <= tableNames.Count)
                 {
-                    break;
+                    habitName = tableNames[habitIndex - 1];
                 }
-                ////////////////////////////////////////////////////////////
+                else
+                {
+                    Console.WriteLine($"\nInvalid selection. Please select a whole number withinrange (1 - {tableNames.Count}) matching a habit in the above list.");
+                    Console.WriteLine("\nPress any key to continue and try again.");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                Console.Clear();
                 string date = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
                 if (date == "0") break;
 
+                Console.Clear();
                 string quantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
                 if (quantity == "0") break;
 
