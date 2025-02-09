@@ -53,7 +53,6 @@ namespace Habit_Tracker
         public static List<string> GetTableNames()
         {
 
-            // TODO -- Use a List instead of an array
             //string names = "";
             List<string> namesList = new List<string>();
 
@@ -90,66 +89,66 @@ namespace Habit_Tracker
             return tableNamesNumbered;
         }
 
-            public static void GetHabitRecords(string habit)
+        public static void GetHabitRecords(string habit)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                using (var connection = new SQLiteConnection(connectionString))
+                connection.Open();
+
+                var tableCmd = connection.CreateCommand();
+                tableCmd.CommandText = $"SELECT * FROM {habit}";
+
+                List<HabitRecord> tableData = new();
+
+                SQLiteDataReader reader = tableCmd.ExecuteReader();
+
+                if (reader.HasRows)
                 {
-                    connection.Open();
-
-                    var tableCmd = connection.CreateCommand();
-                    tableCmd.CommandText = $"SELECT * FROM {habit}";
-
-                    List<HabitRecord> tableData = new();
-
-                    SQLiteDataReader reader = tableCmd.ExecuteReader();
-
-                    if (reader.HasRows)
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        tableData.Add(
+                        new HabitRecord
                         {
-                            tableData.Add(
-                            new HabitRecord
-                            {
-                                Id = reader.GetInt32(0),
-                                Date = DateTime.ParseExact(reader.GetString(1), "MM-dd-yyyy", new CultureInfo("en-US")),
-                                Quantity = reader.GetInt32(2),
-                            });
-                        }
-
-                        connection.Close();
-
-                        Console.WriteLine("---------------------------------------------------");
-
-                        foreach (var item in tableData)
-                        {
-                            Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
-                        }
-
-                        Console.WriteLine("---------------------------------------------------");
-
+                            Id = reader.GetInt32(0),
+                            Date = DateTime.ParseExact(reader.GetString(1), "MM-dd-yyyy", new CultureInfo("en-US")),
+                            Quantity = reader.GetInt32(2),
+                        });
                     }
-                    else
+
+                    connection.Close();
+
+                    Console.WriteLine("---------------------------------------------------");
+
+                    foreach (var item in tableData)
                     {
-                        Console.WriteLine("No entries found");
+                        Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
                     }
+
+                    Console.WriteLine("---------------------------------------------------");
+
                 }
-            }
-
-
-            public static bool CheckForDuplicates(string habit)
-            {
-                List<string> habitNames = GetTableNames();
-
-                foreach (string habitName in habitNames)
+                else
                 {
-                    if (habit == habitName)
-                    {
-                        return true;
-                    }
+                    Console.WriteLine("No entries found");
                 }
-
-                return false;
             }
         }
+
+
+        public static bool CheckForDuplicates(string habit)
+        {
+            List<string> habitNames = GetTableNames();
+
+            foreach (string habitName in habitNames)
+            {
+                if (habit == habitName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
+}
 

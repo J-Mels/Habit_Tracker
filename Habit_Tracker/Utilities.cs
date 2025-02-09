@@ -94,20 +94,13 @@ namespace Habit_Tracker
 
                 string inputError = "";
 
-                // TODO -- Write a reusable method for loop below
-                while (true)
+                if (UserInput.AddAnother("Would you like to create another habit? (Y/N)"))
                 {
-                    string addNextHabit = UserInput.GetUserInput($"{inputError}Would you like to create another habit? (Y/N).");
-
-                    if (addNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
-                        return;
-                    else if (addNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
-                        break;
-                    else
-                    {
-                        inputError = "Invalid selection. Only Y/y or N/n accepted.\n\n";
-                        Console.Clear();
-                    }
+                    continue;
+                }
+                else
+                {
+                    break;
                 }
             }
         }
@@ -165,19 +158,13 @@ namespace Habit_Tracker
 
 
                 // TODO -- Write a reusable method for loop below
-                while (true)
+                if (UserInput.AddAnother($"Would you like to insert another habit entry? (Y/N)"))
                 {
-                    string insertNextHabit = UserInput.GetUserInput($"{inputError}Would you like to insert another habit entry? (Y/N).");
-
-                    if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
-                        return;
-                    else if (insertNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
-                        break;
-                    else
-                    {
-                        inputError = "Invalid selection. Only Y/y or N/n accepted.\n\n";
-                        Console.Clear();
-                    }
+                    continue;
+                }
+                else
+                {
+                    break; ;
                 }
 
             }

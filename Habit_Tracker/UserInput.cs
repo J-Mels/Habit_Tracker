@@ -67,5 +67,25 @@ namespace Habit_Tracker
             }
             return habitQuantityInput;
         }
+
+        public static bool AddAnother(string message)
+        {
+            string inputError = "";
+
+            while (true)
+            {
+                string insertNextHabit = UserInput.GetUserInput($"{inputError}{message}");
+
+                if (insertNextHabit.Equals("N", StringComparison.OrdinalIgnoreCase))
+                    return false;
+                else if (insertNextHabit.Equals("Y", StringComparison.OrdinalIgnoreCase))
+                    return true;
+                else
+                {
+                    inputError = "Invalid selection. Only Y/y or N/n accepted.\n\n";
+                    Console.Clear();
+                }
+            }
+        }
     }
 }
