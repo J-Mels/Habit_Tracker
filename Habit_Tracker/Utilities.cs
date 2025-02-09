@@ -64,7 +64,7 @@ namespace Habit_Tracker
             string habitName = "";
             string inputNameMessage = "Input habit name (No spaces or special characters. Must be no more than 25 characters).\nOr, enter 0 to return to main menu:";
             string tableNames = string.Join("\n", Database.GetTableNames());
-            string existingHabits = $"\n\nHabits already in the Database:\n\n{tableNames}";
+            string existingHabits = $"\n\nHabits already in the Database:\n\n{tableNames}\n";
 
 
             while (true)

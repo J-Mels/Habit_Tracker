@@ -10,11 +10,8 @@ namespace Habit_Tracker
 {
     internal class UserInput
     {
-        //public static string GetUserInput(string message, bool clearConsole = true)
         public static string GetUserInput(string message)
         {
-            //if (clearConsole)
-            //    Console.Clear();
             Console.WriteLine(message);
             string? input = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(input))

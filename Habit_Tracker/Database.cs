@@ -54,7 +54,7 @@ namespace Habit_Tracker
         {
 
             // TODO -- Use a List instead of an array
-            string names = "";
+            //string names = "";
             List<string> namesList = new List<string>();
 
             using (var connection = new SQLiteConnection(connectionString))
