@@ -22,6 +22,7 @@ namespace Habit_Tracker
                 Console.WriteLine("3) Update habit entry");
                 Console.WriteLine("4) View habit entries");
                 Console.WriteLine("5) Delete habit entries");
+                Console.WriteLine("6) Delete habit");
                 Console.WriteLine("0) Exit");
 
                 userInput = Console.ReadLine();
@@ -37,9 +38,7 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "3":
-                        Database.GetHabitRecords("a");
-                        Console.WriteLine("\nPress any key to continue ...");
-                        Console.ReadKey();
+                        UpdateHabit();
                         Console.Clear();
                         break;
                     case "4":
@@ -48,6 +47,10 @@ namespace Habit_Tracker
                         break;
                     case "5":
                         DeleteHabitRecords();
+                        Console.Clear();
+                        break;
+                    case "6":
+                        DeleteHabitTable();
                         Console.Clear();
                         break;
                     case "0":
@@ -150,6 +153,11 @@ namespace Habit_Tracker
 
         }
 
+        private static void UpdateHabit()
+        {
+
+        }
+
         private static void ViewHabits()
         {
             string habitName;
@@ -235,6 +243,60 @@ namespace Habit_Tracker
                 else { break; }
             }
 
+        }
+
+        private static void DeleteHabitTable()
+        {
+            string habitName;
+            string deleteHabitMessage = "Select a habit from the database to delete.\nOr, enter 0 to return to main menu:";
+
+
+            while (true)
+            {
+                Console.Clear();
+
+                List<string> tableNames = Database.GetTableNames();
+
+
+                habitName = UserInput.GetHabitNameByIndex(tableNames, deleteHabitMessage);
+
+                if (habitName == "0")
+                    break;
+
+
+                Console.Clear();
+
+                string confirmationPrompt = $"Are you sure you want to delete habit {habitName}?";
+                string warning = "\n\n***WARNING*** Once deleted, the habit table and all records cannot be retrieved.";
+                string confirmation = "\n\nTo confirm your choice, enter the name of the habit below, or 0 to cancel the operation.";
+
+                string confirmSelection = UserInput.GetUserInput($"{confirmationPrompt}{warning}{confirmation}");
+
+                if (confirmSelection == "0")
+                {
+                    continue;
+                }
+                else if (confirmSelection == habitName)
+                {
+                    Database.DeleteTable(habitName);
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Habit name entered does not match. Please try again.");
+                    Console.WriteLine("\nPress any key to continue ...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                Console.Clear();
+
+                Console.WriteLine($"{habitName} deleted.");
+
+                if (UserInput.AddAnother($"\nWould you like to delete another habit? (Y/N)"))
+                    continue;
+                else { break; }
+            }
         }
     }
 }

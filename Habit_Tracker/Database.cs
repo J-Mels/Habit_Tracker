@@ -143,9 +143,20 @@ namespace Habit_Tracker
             }
         }
 
-        public static void DeleteTable()
+        public static void DeleteTable(string habitName)
         {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                var tableCmd = connection.CreateCommand();
 
+                tableCmd.CommandText = $"DROP TABLE '{habitName}'";
+
+                int rowCount = tableCmd.ExecuteNonQuery();
+
+                connection.Close();
+
+            }
         }
 
         public static bool CheckForDuplicates(string habit)
