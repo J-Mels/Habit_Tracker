@@ -47,6 +47,7 @@ namespace Habit_Tracker
                         Console.Clear();
                         break;
                     case "5":
+                        DeleteHabitRecords();
                         Console.Clear();
                         break;
                     case "0":
@@ -125,7 +126,7 @@ namespace Habit_Tracker
                 if (date == "0") break;
 
                 Console.Clear();
-                quantity = UserInput.GetQuantityInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
+                quantity = UserInput.GetNumberInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
                 if (quantity == "0") break;
 
                 Database.Insert(habitName, date, quantity);
@@ -164,7 +165,7 @@ namespace Habit_Tracker
 
                 Console.Clear();
 
-                Database.GetHabitRecords(habitName);
+                Console.WriteLine(Database.GetHabitRecords(habitName));
 
                 if (UserInput.AddAnother($"Would you like to view more habit records? (Y/N)"))
                     continue;
@@ -175,10 +176,14 @@ namespace Habit_Tracker
         private static void DeleteHabitRecords()
         {
             string habitName;
+            string idSelection;
+            string habitRecords;
+            int rowsDeleted;
             string deleteHabitMessage = "Select a habit from the database to delete entries.\nOr, enter 0 to return to main menu:";
 
             while (true)
             {
+                Console.Clear();
 
                 List<string> tableNames = Database.GetTableNames();
 
@@ -189,10 +194,45 @@ namespace Habit_Tracker
 
                 Console.Clear();
 
-                Database.GetHabitRecords(habitName);
-                // TODO: Prompt for confirmation before proceeding
-                // TODO: Call deletion method from Database.cs
-                // TODO: Ask user if they want to delete another record
+                habitRecords = Database.GetHabitRecords(habitName);
+
+                if (habitRecords == "No entries found")
+                {
+                    Console.WriteLine($"No entries found for {habitName}");
+                    Console.WriteLine("Press any key to continue ...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                while (true)
+                {
+                    Console.Clear();
+
+                    idSelection = UserInput.GetNumberInput($"{habitRecords}\n\nEnter the ID of the record you would like to delete, or enter 0 to return to main menu.");
+
+                    if (idSelection == "0")
+                        return;
+
+
+                    rowsDeleted = Database.DeleteRecord(habitName, idSelection);
+
+                    if (rowsDeleted == 0)
+                    {
+                        Console.WriteLine("\nThe record ID entered does not exist in the table.");
+                        Console.WriteLine("Press any key to continue ...");
+                        Console.ReadKey();
+                        continue;
+                    }
+
+                    break;
+
+                }
+
+                Console.WriteLine($"\nEntry #{idSelection} deleted from {habitName}");
+
+                if (UserInput.AddAnother($"\nWould you like to delete another habit record? (Y/N)"))
+                    continue;
+                else { break; }
             }
 
         }

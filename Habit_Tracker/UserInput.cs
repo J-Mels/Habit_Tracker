@@ -91,15 +91,15 @@ namespace Habit_Tracker
 
         }
 
-        public static string GetQuantityInput(string message)
+        public static string GetNumberInput(string message)
         {
-            string habitQuantityInput = GetUserInput(message);
-            while (habitQuantityInput != "0" && !int.TryParse(habitQuantityInput, out _))
+            string numberInput = GetUserInput(message);
+            while (numberInput != "0" && !int.TryParse(numberInput, out _))
             {
                 Console.Clear();
-                habitQuantityInput = GetUserInput($"Invalid entry.\n\n{message}");
+                numberInput = GetUserInput($"Invalid entry.\n\n{message}");
             }
-            return habitQuantityInput;
+            return numberInput;
         }
 
         public static bool AddAnother(string message)

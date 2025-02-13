@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Habit_Tracker
 {
@@ -76,7 +77,7 @@ namespace Habit_Tracker
             }
         }
 
-        public static void GetHabitRecords(string habit)
+        public static string GetHabitRecords(string habit)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -104,26 +105,42 @@ namespace Habit_Tracker
 
                     connection.Close();
 
-                    Console.WriteLine("---------------------------------------------------");
+                    string stringData = "";
+
+                    stringData += $"------Entries for habit \"{habit}\"------\n";
+                    stringData += "---------------------------------------------------\n";
 
                     foreach (var item in tableData)
                     {
-                        Console.WriteLine($"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}");
+                        stringData += $"{item.Id} -- {item.Date.ToString("MMM-dd-yyyy")} -- Quantity: {item.Quantity}\n";
                     }
 
-                    Console.WriteLine("---------------------------------------------------");
+                    stringData += "---------------------------------------------------";
 
+                    return stringData;
                 }
                 else
                 {
-                    Console.WriteLine("No entries found");
+                    return "No entries found";
                 }
             }
         }
 
-        public static void DeleteRecord()
+        public static int DeleteRecord(string habitName, string habitEntryId)
         {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                var tableCmd = connection.CreateCommand();
 
+                tableCmd.CommandText = $"DELETE from {habitName} WHERE Id = '{habitEntryId}'";
+
+                int rowCount = tableCmd.ExecuteNonQuery();
+
+                connection.Close();
+
+                return rowCount;
+            }
         }
 
         public static void DeleteTable()
