@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Habit_Tracker
 {
@@ -138,8 +139,6 @@ namespace Habit_Tracker
 
                 Console.WriteLine($"Habit entry inserted into {habitName}\n");
 
-
-                // TODO -- Write a reusable method for loop below
                 if (UserInput.AddAnother($"Would you like to insert another habit entry? (Y/N)"))
                 {
                     continue;
@@ -155,7 +154,73 @@ namespace Habit_Tracker
 
         private static void UpdateHabit()
         {
+            string habitName;
+            string updateHabitMessage = "Select a habit from the database to update an entry.\nOr, enter 0 to return to main menu:";
+            string habitRecords;
+            string idSelection;
 
+
+            while (true)
+            {
+                List<string> tableNames = Database.GetTableNames();
+
+                habitName = UserInput.GetHabitNameByIndex(tableNames, updateHabitMessage);
+                if (habitName == "0")
+                    break;
+
+                Console.Clear();
+
+                habitRecords = Database.GetHabitRecords(habitName);
+
+                if (habitRecords == "No entries found")
+                {
+                    Console.WriteLine($"No entries found for {habitName}");
+                    Console.WriteLine("Press any key to continue ...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                while (true)
+                {
+                    Console.Clear();
+
+                    idSelection = UserInput.GetNumberInput($"{habitRecords}\n\nEnter the ID of the record you would like to update, or enter 0 to return to main menu.");
+
+                    if (idSelection == "0")
+                        return;
+
+                    if (Database.CheckRecord(habitName, idSelection))
+                    {
+                        Console.Clear();
+                        string date = UserInput.GetDateInput("Input habit date (Use mm-dd-yyyy format).\nOr, enter 0 to return to main menu:");
+                        if (date == "0") return;
+                        Console.Clear();
+
+                        string quantity = UserInput.GetNumberInput("Input habit quantity (Only whole numbers accepted).\nOr, enter 0 to return to main menu:");
+                        if (quantity == "0") return;
+                        Console.Clear();
+
+                        Database.Update(habitName, idSelection, date, quantity);
+
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\nRecord with Id {idSelection} doesn't exist.");
+                        Console.WriteLine("Press any key to continue ...");
+                        Console.ReadKey();
+                        continue;
+                    }
+
+
+                }
+
+                Console.WriteLine($"Entry #{idSelection} updated from {habitName}");
+
+                if (UserInput.AddAnother($"\nWould you like to update another habit record? (Y/N)"))
+                    continue;
+                else { break; }
+            }
         }
 
         private static void ViewHabits()

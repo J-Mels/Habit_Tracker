@@ -77,14 +77,14 @@ namespace Habit_Tracker
             }
         }
 
-        public static string GetHabitRecords(string habit)
+        public static string GetHabitRecords(string habitName)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
 
                 var tableCmd = connection.CreateCommand();
-                tableCmd.CommandText = $"SELECT * FROM {habit}";
+                tableCmd.CommandText = $"SELECT * FROM {habitName}";
 
                 List<HabitRecord> tableData = new();
 
@@ -107,7 +107,7 @@ namespace Habit_Tracker
 
                     string stringData = "";
 
-                    stringData += $"------Entries for habit \"{habit}\"------\n";
+                    stringData += $"------Entries for habit \"{habitName}\"------\n";
                     stringData += "---------------------------------------------------\n";
 
                     foreach (var item in tableData)
@@ -126,6 +126,43 @@ namespace Habit_Tracker
             }
         }
 
+        public static bool CheckRecord(string habitName, string habitEntryId)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                var checkCmd = connection.CreateCommand();
+                checkCmd.CommandText = $"SELECT EXISTS(SELECT 1 FROM {habitName} WHERE Id = {habitEntryId})";
+                int checkQuery = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                connection.Close();
+
+                if (checkQuery == 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public static void Update(string habitName, string id, string date, string quantity)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                var tableCmd = connection.CreateCommand();
+
+                tableCmd.CommandText = $"UPDATE {habitName} SET date = '{date}', quantity = {quantity} WHERE Id = {id}";
+
+                tableCmd.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
         public static int DeleteRecord(string habitName, string habitEntryId)
         {
             using (var connection = new SQLiteConnection(connectionString))
@@ -133,7 +170,7 @@ namespace Habit_Tracker
                 connection.Open();
                 var tableCmd = connection.CreateCommand();
 
-                tableCmd.CommandText = $"DELETE from {habitName} WHERE Id = '{habitEntryId}'";
+                tableCmd.CommandText = $"DELETE from '{habitName}' WHERE Id = '{habitEntryId}'";
 
                 int rowCount = tableCmd.ExecuteNonQuery();
 
