@@ -1,8 +1,4 @@
-﻿using System;
-using System.Data.SQLite;
-using System.Security.Cryptography.X509Certificates;
-
-namespace Habit_Tracker
+﻿namespace Habit_Tracker
 {
     class Program
     {
