@@ -31,19 +31,19 @@ namespace Habit_Tracker
                 switch (userInput)
                 {
                     case "1":
-                        CreateHabit();
+                        ViewHabits();
                         Console.Clear();
                         break;
                     case "2":
-                        InsertHabit();
+                        CreateHabit();
                         Console.Clear();
                         break;
                     case "3":
-                        UpdateHabit();
+                        InsertHabit();
                         Console.Clear();
                         break;
                     case "4":
-                        ViewHabits();
+                        UpdateHabit();
                         Console.Clear();
                         break;
                     case "5":
@@ -75,7 +75,6 @@ namespace Habit_Tracker
 
             while (true)
             {
-
 
                 Console.Clear();
 
@@ -113,14 +112,22 @@ namespace Habit_Tracker
         {
             string habitName;
             string selectHabitMessage = "Select a habit from the database.\nOr, enter 0 to return to main menu:";
-            List<string> tableNames = Database.GetTableNames();
             string date;
             string quantity;
 
             while (true)
             {
 
+                List<string> tableNames = Database.GetTableNames();
+
+                if (tableNames.Count == 0)
+                {
+                    Console.WriteLine("No habits in the database. Press any key to return to main menu ...");
+                    return;
+                }
+
                 habitName = UserInput.GetHabitNameByIndex(tableNames, selectHabitMessage);
+
                 if (habitName == "0")
                     break;
 
@@ -163,6 +170,12 @@ namespace Habit_Tracker
             while (true)
             {
                 List<string> tableNames = Database.GetTableNames();
+
+                if (tableNames.Count == 0)
+                {
+                    Console.WriteLine("No habits in the database. Press any key to return to main menu ...");
+                    return;
+                }
 
                 habitName = UserInput.GetHabitNameByIndex(tableNames, updateHabitMessage);
                 if (habitName == "0")
@@ -229,6 +242,12 @@ namespace Habit_Tracker
             string viewHabitMessage = "Select a habit from the database to view entries.\nOr, enter 0 to return to main menu:";
             List<string> tableNames = Database.GetTableNames();
 
+            if (tableNames.Count == 0)
+            {
+                Console.WriteLine("No habits in the database. Press any key to return to main menu ...");
+                return;
+            }
+
             while (true)
             {
 
@@ -259,6 +278,12 @@ namespace Habit_Tracker
                 Console.Clear();
 
                 List<string> tableNames = Database.GetTableNames();
+
+                if (tableNames.Count == 0)
+                {
+                    Console.WriteLine("No habits in the database. Press any key to return to main menu ...");
+                    return;
+                }
 
                 habitName = UserInput.GetHabitNameByIndex(tableNames, deleteHabitMessage);
 
@@ -322,6 +347,11 @@ namespace Habit_Tracker
 
                 List<string> tableNames = Database.GetTableNames();
 
+                if (tableNames.Count == 0)
+                {
+                    Console.WriteLine("No habits in the database. Press any key to return to main menu ...");
+                    return;
+                }
 
                 habitName = UserInput.GetHabitNameByIndex(tableNames, deleteHabitMessage);
 
